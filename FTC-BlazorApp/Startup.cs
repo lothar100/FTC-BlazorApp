@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FTC_BlazorApp.Areas.Identity;
 using FTC_BlazorApp.Data;
+using Toolbelt.Blazor.Extensions.DependencyInjection;
 
 namespace FTC_BlazorApp
 {
@@ -39,7 +40,7 @@ namespace FTC_BlazorApp
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-            services.AddSingleton<WeatherForecastService>();
+            services.AddGamepadList();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

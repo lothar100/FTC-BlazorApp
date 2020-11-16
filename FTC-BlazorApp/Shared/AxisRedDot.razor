@@ -1,0 +1,27 @@
+﻿@if (Show)
+{
+    <span class="red-dot" style="left: @LeftPx; top: @TopPx"></span>
+}
+
+@code {
+    [Parameter]
+    public int Left { get; set; }
+
+    [Parameter]
+    public int Top { get; set; }
+
+    [Parameter]
+    public int Scale { get; set; }
+
+    [Parameter]
+    public double xOffset { get; set; }
+
+    [Parameter]
+    public double yOffset { get; set; }
+
+    private double threshold = 0.2;
+
+    public string LeftPx => $"{Left + (int)(Scale * xOffset)}px";
+    public string TopPx => $"{Top + (int)(Scale * yOffset)}px";
+    public bool Show => Math.Abs(xOffset) > threshold || Math.Abs(yOffset) > threshold;
+}

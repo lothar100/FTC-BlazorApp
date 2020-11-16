@@ -1,0 +1,87 @@
+﻿@using Toolbelt.Blazor.Gamepad
+
+<div style="position: relative">
+
+    <img src="./images/gamepad.png" width="211" height="144">
+
+    @if (Gamepad.Axes.Count > 0)
+    {
+        <AxisRedDot Left=50 Top="42" Scale="10" xOffset="Gamepad.Axes[0]" yOffset="Gamepad.Axes[1]"></AxisRedDot>
+        <AxisRedDot Left=130 Top="74" Scale="10" xOffset="Gamepad.Axes[2]" yOffset="Gamepad.Axes[3]"></AxisRedDot>
+    }
+
+    @if (Gamepad.Buttons.Count > 0)
+    {
+        if (Gamepad.Buttons[0].Pressed)
+        {
+            <img src="./images/inputCircle.png" width="20" height="20" style="position: absolute; left: 151px; top: 49px">
+        }
+        if (Gamepad.Buttons[1].Pressed)
+        {
+            <img src="./images/inputCircle.png" width="20" height="20" style="position: absolute; left: 164px; top: 35px">
+        }
+        if (Gamepad.Buttons[2].Pressed)
+        {
+            <img src="./images/inputCircle.png" width="20" height="20" style="position: absolute; left: 137px; top: 35px">
+        }
+        if (Gamepad.Buttons[3].Pressed)
+        {
+            <img src="./images/inputCircle.png" width="20" height="20" style="position: absolute; left: 151px; top: 21px">
+        }
+
+        if (Gamepad.Buttons[4].Pressed)
+        {
+            <div style="color: lawngreen; font-size: 10px; position: absolute; left: 54px; top: 0px">[LB]</div>
+        }
+        if (Gamepad.Buttons[5].Pressed)
+        {
+            <div style="color: lawngreen; font-size: 10px; position: absolute; left: 140px; top: 0px">[RB]</div>
+        }
+        if (Gamepad.Buttons[6].Pressed)
+        {
+            <div style="color: lawngreen; font-size: 10px; position: absolute; left: 34px; top: 7px">[LT]</div>
+        }
+        if (Gamepad.Buttons[7].Pressed)
+        {
+            <div style="color: lawngreen; font-size: 10px; position: absolute; left: 160px; top: 7px">[RT]</div>
+        }
+
+        if (Gamepad.Buttons[8].Pressed)
+        {
+            <img src="./images/inputCircle.png" width="20" height="20" style="position: absolute; left: 82px; top: 35px">
+        }
+        if (Gamepad.Buttons[9].Pressed)
+        {
+            <img src="./images/inputCircle.png" width="20" height="20" style="position: absolute; left: 112px; top: 35px">
+        }
+        if (Gamepad.Buttons[10].Pressed)
+        {
+            <img src="./images/inputCircle.png" width="20" height="20" style="position: absolute; left: 43px; top: 34px">
+        }
+        if (Gamepad.Buttons[11].Pressed)
+        {
+            <img src="./images/inputCircle.png" width="20" height="20" style="position: absolute; left: 124px; top: 66px">
+        }
+        if (Gamepad.Buttons[12].Pressed)
+        {
+            <img src="./images/inputCircle.png" width="20" height="20" style="position: absolute; left: 70px; top: 61px">
+        }
+        if (Gamepad.Buttons[13].Pressed)
+        {
+            <img src="./images/inputCircle.png" width="20" height="20" style="position: absolute; left: 70px; top: 76px">
+        }
+        if (Gamepad.Buttons[14].Pressed)
+        {
+            <img src="./images/inputCircle.png" width="20" height="20" style="position: absolute; left: 61px; top: 69px">
+        }
+        if (Gamepad.Buttons[15].Pressed)
+        {
+            <img src="./images/inputCircle.png" width="20" height="20" style="position: absolute; left: 81px; top: 69px">
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Toolbelt.Blazor.Gamepad.Gamepad Gamepad { get; set; }
+}

@@ -1,8 +1,47 @@
 ﻿@page "/gamepad"
-<h3>Gamepad</h3>
+@using Toolbelt.Blazor.Gamepad
+@using System.Timers
+@implements IDisposable
+@inject GamepadList _GamepadList
 
-<img src="./images/gamepad.png" width="422" height="288">
+<h3>Gamepads</h3>
+
+@if (Gamepads != null)
+{
+    foreach (var gamepad in Gamepads)
+    {
+        <GamepadDisplay Gamepad="gamepad"></GamepadDisplay>
+    }
+}
 
 @code {
 
+    IReadOnlyList<Toolbelt.Blazor.Gamepad.Gamepad> Gamepads;
+
+    Timer Timer = new Timer(200) { Enabled = true };
+
+    int GamepadCount = 0;
+
+    protected override void OnInitialized()
+    {
+        Timer.Elapsed += Timer_Elapsed;
+    }
+
+    async void Timer_Elapsed(object sender, EventArgs args)
+    {
+        Gamepads = await _GamepadList.GetGamepadsAsync();
+
+        if (this.Gamepads.Any() || this.Gamepads.Count != GamepadCount)
+        {
+            GamepadCount = this.Gamepads.Count;
+            await this.InvokeAsync(() => this.StateHasChanged());
+        }
+
+    }
+
+    public void Dispose()
+    {
+        Timer.Elapsed -= Timer_Elapsed;
+        Timer.Dispose();
+    }
 }
