@@ -16,6 +16,9 @@ using Microsoft.Extensions.Hosting;
 using FTC_BlazorApp.Areas.Identity;
 using FTC_BlazorApp.Data;
 using Toolbelt.Blazor.Extensions.DependencyInjection;
+using System.Net.WebSockets;
+using Microsoft.AspNetCore.Http;
+using System.Threading;
 
 namespace FTC_BlazorApp
 {
@@ -58,6 +61,25 @@ namespace FTC_BlazorApp
                 app.UseHsts();
             }
 
+            app.UseWebSockets(new WebSocketOptions()
+            {
+                KeepAliveInterval = TimeSpan.FromSeconds(120),
+                ReceiveBufferSize = 4 * 1024
+            });
+
+            app.Use(async (context, next) =>
+            {
+                if (context.WebSockets.IsWebSocketRequest && context.Request.Host.Port == 9091)
+                {
+                    WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
+                    await Echo(context, webSocket);
+                }
+                else
+                {
+                    await next();
+                }
+            });
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -72,6 +94,18 @@ namespace FTC_BlazorApp
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+        }
+
+        private async Task Echo(HttpContext context, WebSocket webSocket)
+        {
+            var buffer = new byte[1024 * 4];
+            WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+            while (!result.CloseStatus.HasValue)
+            {
+                await webSocket.SendAsync(new ArraySegment<byte>(buffer, 0, result.Count), result.MessageType, result.EndOfMessage, CancellationToken.None);
+                result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+            }
+            await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
         }
     }
 }

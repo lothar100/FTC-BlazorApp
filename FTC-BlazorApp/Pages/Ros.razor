@@ -1,0 +1,36 @@
+﻿@page "/ros"
+@inject IJSRuntime _JS
+
+<h3>Ros</h3>
+
+<AlertText Text="@Message" Class="success"></AlertText>
+<AlertText Text="@Error" Class="danger"></AlertText>
+
+@code {
+
+    string Message;
+    string Error;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await _JS.InvokeVoidAsync("JsFunctions.rosConnect", DotNetObjectReference.Create(this));
+        }
+    }
+
+    [JSInvokable]
+    public void RosMessage(string message, bool isError)
+    {
+        if (isError)
+        {
+            Error = message;
+        }
+        else
+        {
+            Message = message;
+        }
+        StateHasChanged();
+    }
+
+}
